@@ -269,7 +269,11 @@ check_diagnal(struct board* pBoard)
         mCol = col - mod;
         count = 0;
         while (mRow < ROWS && mCol < COLS) {
-            if (pBoard->mark[mRow][mCol] == d_mark[i]) count++;
+            if (pBoard->mark[mRow][mCol] == d_mark[i]) {
+                count++;
+            } else {
+                count = 0;
+            }
             if (count == 4) return d_mark[i];
             mRow++; mCol++;
         }
@@ -280,7 +284,11 @@ check_diagnal(struct board* pBoard)
         mCol = col - mod;
         count = 0;
         while (mRow < ROWS && mCol < COLS) {
-            if (pBoard->mark[mRow][mCol] == d_mark[i]) count++;
+            if (pBoard->mark[mRow][mCol] == d_mark[i]) {
+                count++;
+            } else {
+                count = 0;
+            }
             if (count == 4) return d_mark[i];
             mRow--; mCol++;
         }
