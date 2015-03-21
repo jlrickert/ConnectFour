@@ -21,7 +21,7 @@ distclean:
 	@- $(RM) ./build/cmake.*
 	@- $(RM) ./build/*.cmake
 	@- $(RM) ./build/*.txt
-	@- $(RM) ./build/*
+	@- $(RM) ./build/connectFour*
 	@- $(RM) ./docs/*.html
 	@- $(RM) ./docs/*.css
 	@- $(RM) ./docs/*.png
