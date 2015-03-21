@@ -1,23 +1,53 @@
-cmake_minimum_required (VERSION 3.1)
+cmake_minimum_required (VERSION 3.1.1)
 project (connectFour)
 set (APPLICATION_NAME "${PROJECT_NAME}")
 set (APPLICATION_CODENAME "${PROJECT_NAME}")
+set (APPLICATION_COPYRIGHT_YEARS 2015)
 set (APPLICATION_VERSION_MAJOR 0)
-set (APPLICATION_VERSION_MINOR 0)
+set (APPLICATION_VERSION_MINOR 1)
 set (APPLICATION_VERSION_PATCH 0)
 set (APPLICATION_VERSION_TYPE SNAPSHOT)
 set (APPLICATION_VERSION_STRING "${APPLICATION_VERSION_MAJOR}.${APPLICATION_VERSION_MINOR}.${APPLICATION_VERSION_PATCH}-${APPLICATION_VERSION_TYPE}")
 
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
+
 # Compiler Options
 add_definitions (-std=c11)
 
+#
 # Debugging Options
+#
 set (CMAKE_VERBOSE_MAKEFILE 0) # Use 1 for debugging, 0 for release
 set (BUILD_SHARED_LIBS 0)
 
+#
+# Configure Files
+#
+FILE (GLOB_RECURSE CONFIGINPUTS1 *.in.h.cmake)
+FILE (GLOB_RECURSE CONFIGINPUTS2 *.h.in.cmake)
+LIST (APPEND CONFIGINPUTS "${CONFIGINPUTS1}")
+LIST (APPEND CONFIGINPUTS "${CONFIGINPUTS2}")
+FOREACH (CONFIGINPUT ${CONFIGINPUTS})
+    STRING (REPLACE ".in.h.cmake" ".h" CONFIGOUTPUT1 "${CONFIGINPUT}")
+    STRING (REPLACE ".h.in.cmake" ".h" CONFIGOUTPUT2 "${CONFIGOUTPUT1}")
+    CONFIGURE_FILE ("${CONFIGINPUT}" "${CONFIGOUTPUT2}")
+ENDFOREACH (CONFIGINPUT ${CONFIGINPUTS})
+
+#
+# Find and include libraries
+#
+find_package (NSPR)
+if (NSPR_FOUND)
+    include_directories (${NSPR_INCLUDE_DIRS})
+    link_directories (${NSPR_LIBRARIES})
+    set (APPEND ${project_LIBS} ${NSPR_LIBRARIES})
+endif ()
+
+#
 # Build Project
-add_executable (${PROJECT_NAME} c4.c helper.c)
-target_link_libraries (${PROJECT_NAME} ${})
+#
+add_executable (${PROJECT_NAME} c4.c core.c helper.c multiplayer.c)
+target_link_libraries (${PROJECT_NAME} ${project_LIBS})
 set_target_properties (${PROJECT_NAME} PROPERTIES VERSION "${APPLICATION_VERSION_MAJOR}.${APPLICATION_VERSION_MINOR}.${APPLICATION_VERSION_PATCH}" OUTPUT_NAME ${PROJECT_NAME} CLEAN_DIRECT_OUTPUT 1)
 
 install (TARGETS ${PROJECT_NAME} DESTINATION bin)
