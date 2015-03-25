@@ -23,7 +23,7 @@ new_board()
     get_str(&(board.playerTwo));
 
     // Generate blank board
-    for (int i = 0; i < 2; i++) clear_lines(1);
+    clear_lines(2);
     for (int row = 0; row < ROWS; row++) {
         for (int col = 0; col < COLS; col++) {
             board.mark[row][col] = 0;
@@ -239,45 +239,12 @@ check_diagnal(struct board* pBoard)
     int mRow, mCol, mod;
     int count;
     int marker;
-    int d_rank[ROWS][COLS] = {
-        {1,1,1,1,1,1,1},
-        {1,2,3,4,3,2,1},
-        {1,3,5,6,5,4,1},
-        {1,3,5,6,5,4,1},
-        {1,2,3,4,3,2,1},
-        {1,1,1,1,1,1,1}
-    };
 
     if (pBoard->round < 10) {
         return 0;
     } else if (pBoard->round < 11) {
         memset(d_invalid,  0, sizeof(int[6]));
         memset(d_mark,     0, sizeof(int[6]));
-    }
-
-    // find dead diagnals
-    int match_row[] = {-1, -1, 1, 1};
-    int match_col[] = {-1, 1, 1, -1};
-    for (int i = 0; i < 6; i++) {
-        if (d_invalid[i]) continue;
-        row = row_order[i];
-        col = col_order[i];
-        marker = pBoard->mark[row][col];
-        count = 0;
-        for (int j = 0; j < 4; j++) {
-            mRow = row + match_row[i];
-            mCol = col + match_col[i];
-            if ((mRow == ROWS - 1) || (mCol == COLS - 1)) {
-                count++;
-            } else if (pBoard->mark[mRow][mCol] == marker) {
-                count ++;
-            } else {
-                break;
-            }
-        }
-        if (count == 4) {
-            d_invalid[i] = 1;
-        }
     }
 
     // check valid diagnals
@@ -297,7 +264,11 @@ check_diagnal(struct board* pBoard)
         mCol = col - mod;
         count = 0;
         while (mRow < ROWS && mCol < COLS) {
-            if (pBoard->mark[mRow][mCol] == d_mark[i]) count++;
+            if (pBoard->mark[mRow][mCol] == d_mark[i]) {
+                count++;
+            } else {
+                count = 0;
+            }
             if (count == 4) return d_mark[i];
             mRow++; mCol++;
         }
@@ -308,7 +279,11 @@ check_diagnal(struct board* pBoard)
         mCol = col - mod;
         count = 0;
         while (mRow < ROWS && mCol < COLS) {
-            if (pBoard->mark[mRow][mCol] == d_mark[i]) count++;
+            if (pBoard->mark[mRow][mCol] == d_mark[i]) {
+                count++;
+            } else {
+                count = 0;
+            }
             if (count == 4) return d_mark[i];
             mRow--; mCol++;
         }
