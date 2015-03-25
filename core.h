@@ -1,15 +1,8 @@
-#ifndef C4_H
-#define C4_H
+#ifndef CORE_H
+#define CORE_H
 
 #define ROWS 6
 #define COLS 7
-
-
-wchar_t mark[3][28] = {
-    {L"О"},
-    {L"\x1B[34m█\x1B[0m"},
-    {L"\x1B[31m█\x1B[0m"}
-};
 
 struct board {
     int round;
