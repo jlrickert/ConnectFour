@@ -10,11 +10,13 @@ void
 clear_lines(unsigned int nLines)
 {
 #ifdef __unix__
-    printf("%c[2K\b\b", 27);
+    /* printf("%c[2K\b\b", 27); */
+    printf("\033[2K");
     for (int i = 0; i < nLines; i++) {
-        printf("\033[1A");
+        printf("\033[A");
+        printf("\033[2K");
     }
-    printf("%c[2K\b\b", 27);
+    /* printf("%c[2K\b\b", 27); */
 #elif __WIN32
     // need a compatible implimentation
 #endif

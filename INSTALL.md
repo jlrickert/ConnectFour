@@ -13,13 +13,6 @@ If using Cygwin:
   - make
   - make install
 
-# If using Visual Studio:
-
-  - Follow the directions at the link for running CMake on Windows:
-  - http://www.opentissue.org/wikitissue/index.php/Using_CMake
-
-  - NOTE: Select the "build" folder as the location to build the binaries.
-
 # Mac OS X
 
   - ./configure
